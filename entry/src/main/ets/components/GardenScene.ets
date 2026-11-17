@@ -185,24 +185,6 @@ export struct GardenScene {
       }
       .width('100%')
       .height('100%')
-
-      // 背景装饰：太阳 / 云 / 花
-      Text('☀️')
-        .fontSize(ScreenUtil.f(30))
-        .position({ x: '80%', y: '1%' })
-        .hitTestBehavior(HitTestMode.None)
-      Text('☁️')
-        .fontSize(ScreenUtil.f(22))
-        .position({ x: '5%', y: '4%' })
-        .hitTestBehavior(HitTestMode.None)
-      Text('🌷')
-        .fontSize(ScreenUtil.f(18))
-        .position({ x: '3%', y: '90%' })
-        .hitTestBehavior(HitTestMode.None)
-      Text('🌼')
-        .fontSize(ScreenUtil.f(16))
-        .position({ x: '90%', y: '88%' })
-        .hitTestBehavior(HitTestMode.None)
     }
     .width('100%')
     .height('100%')

@@ -378,16 +378,6 @@ export struct KitchenScene {
         .height(0)
         .border({ width: ScreenUtil.w(1), color: '#B8860B' })
 
-        // 墙面装饰：酱料罐 / 调料
-        Text('🫙')
-          .fontSize(ScreenUtil.f(20))
-          .position({ x: '3%', y: '74%' })
-          .hitTestBehavior(HitTestMode.None)
-        Text('🧂')
-          .fontSize(ScreenUtil.f(18))
-          .position({ x: '86%', y: '66%' })
-          .hitTestBehavior(HitTestMode.None)
-
         // 砧板角落：切好食材库存
         Text(this.stockLabel())
           .fontSize(ScreenUtil.f(11))
