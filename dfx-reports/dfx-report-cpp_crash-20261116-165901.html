@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CppCrash 分析报告：摄像头切菜闪退</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+       color: #1f2328; background: #f6f8fa; margin: 0; padding: 24px; line-height: 1.65; }
+.layout { max-width: 1232px; margin: 0 auto; display: flex; gap: 32px; align-items: flex-start; }
+.page { flex: 1 1 auto; min-width: 0; max-width: 960px; background: #fff; border: 1px solid #d0d7de;
+        border-radius: 10px; padding: 32px 40px; box-shadow: 0 1px 3px rgba(31,35,40,.08); }
+h1 { font-size: 22px; border-bottom: 1px solid #d8dee4; padding-bottom: 10px; margin-top: 0; }
+h2 { font-size: 18px; border-bottom: 1px solid #eaeef2; padding-bottom: 6px; margin-top: 28px; }
+h3 { font-size: 16px; margin-top: 22px; }
+h4, h5, h6 { font-size: 14px; margin-top: 18px; }
+h1, h2, h3, h4, h5, h6 { scroll-margin-top: 16px; }
+.meta { color: #57606a; font-size: 13px; margin-bottom: 20px; }
+.meta .badge { display: inline-block; background: #ddf4ff; color: #0969da; border: 1px solid #54aeff;
+               border-radius: 999px; padding: 1px 10px; margin-right: 10px; font-weight: 600; }
+.table-wrap { overflow-x: auto; margin: 12px 0; }
+table { border-collapse: collapse; width: 100%; margin: 0; font-size: 14px; }
+th, td { border: 1px solid #d8dee4; padding: 6px 12px; text-align: left; vertical-align: top; }
+th { background: #f6f8fa; }
+code { font-family: ui-monospace, SFMono-Regular, 'JetBrains Mono', Consolas, monospace;
+       background: #eff1f3; border-radius: 4px; padding: 1px 5px; font-size: 13px; }
+pre { background: #f6f8fa; border: 1px solid #d8dee4; border-radius: 8px; padding: 14px 16px;
+      overflow: auto; line-height: 1.5; max-height: 70vh; }
+pre code { background: none; padding: 0; font-size: 13px; white-space: pre; }
+.tok-kw { color: #cf222e; font-weight: 600; }
+.tok-str { color: #0a3069; }
+.tok-com { color: #6e7781; font-style: italic; }
+.tok-num { color: #0550ae; }
+.diff-ins { color: #116329; background: #dafbe1; display: block; }
+.diff-del { color: #82071e; background: #ffebe9; display: block; }
+.diff-hunk { color: #0550ae; background: #ddf4ff; display: block; }
+.diff-file { color: #57606a; background: #eff1f3; display: block; }
+.diff-txt { display: block; }
+hr { border: none; border-top: 1px solid #d8dee4; margin: 20px 0; }
+blockquote { border-left: 3px solid #54aeff; background: #f6f8fa; color: #57606a;
+             margin: 12px 0; padding: 8px 16px; border-radius: 0 6px 6px 0; }
+blockquote p { margin: 4px 0; }
+.footer { color: #6e7781; font-size: 12px; margin-top: 32px; border-top: 1px solid #eaeef2; padding-top: 12px; }
+.toc { flex: 0 0 240px; position: sticky; top: 24px; max-height: calc(100vh - 48px);
+       overflow-y: auto; font-size: 13px; line-height: 1.5; padding: 6px 0 6px 14px;
+       border-left: 2px solid #eaeef2; }
+.toc:empty { display: none; }
+.toc .toc-title { font-weight: 600; color: #1f2328; margin-bottom: 6px; font-size: 12px;
+                  letter-spacing: .5px; }
+.toc a { display: block; color: #57606a; text-decoration: none; padding: 3px 6px; border-radius: 6px; }
+.toc a:hover { color: #0969da; background: #f6f8fa; }
+.toc a.active { color: #0969da; background: #ddf4ff; font-weight: 600; }
+.toc a.toc-1 { font-weight: 600; }
+.toc a.toc-2 { padding-left: 16px; }
+@media (max-width: 1200px) { .toc { display: none; } }
+@media print {
+  body { background: #fff; padding: 0; }
+  .layout { display: block; max-width: none; }
+  .page { border: none; box-shadow: none; max-width: none; }
+  .toc { display: none; }
+  pre { max-height: none; }
+  .table-wrap { overflow: visible; }
+  th, td { overflow-wrap: anywhere; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<div class="page">
+<h1>CppCrash 分析报告：摄像头切菜闪退</h1>
+<div class="meta"><span class="badge">Native 崩溃（CppCrash）</span>生成时间：2026-11-16 16:59:01</div>
+<p>分诊结论：cpp_crash；输入完整度：full；置信度：high</p>
+<h1 id="s-1">CppCrash 问题综合分析报告</h1>
+<h2 id="s-2">故障基本信息</h2>
+<ul><li><strong>故障时间</strong>：2026-11-16 16:40:48.534</li><li><strong>故障进程</strong>：3298 / com.example.myapplication / UID 20020063</li><li><strong>故障类型</strong>：CPP_CRASH (NativeCrash)</li><li><strong>信号类型</strong>：signo=SIGSEGV, code=SEGV_MAPERR</li><li><strong>崩溃地址</strong>：0x00007f3e06607000</li><li><strong>崩溃函数</strong>：libskia_canvaskit.z.so!sse2::RGBA_to_rgbA(unsigned int<em>, unsigned int const</em>, int)+16</li><li><strong>崩溃模块</strong>：/system/lib64/libskia_canvaskit.z.so</li><li><strong>故障原因描述</strong>：Signal:SIGSEGV(SEGV_MAPERR)@0x00007f3e06607000</li><li><strong>LastFatalMessage</strong>：无</li></ul>
+<h2 id="s-3">根因分析</h2>
+<ul><li><strong>诊断结果</strong>：应用侧将相机帧组件的 rowStride（字节单位，5120）误作像素宽度传入 <code>image.createPixelMap</code>，声明源尺寸 5120×720（RGBA_8888 需 14,745,600 字节）远超源缓冲区实际容量 3,686,400 字节（= 1280×720×4），系统 image 库按声明尺寸读取源数据越过映射末界，触发 SIGSEGV，进程终止表现为&quot;闪退&quot;。</li><li><strong>故障类别</strong>：越界访问（入参尺寸与源缓冲区不匹配）</li><li><strong>可信度</strong>：HIGH</li></ul>
+<h2 id="s-4">三级根因定位（依据 CPP_CRASH 故障模式库）</h2>
+<blockquote><p>模板判定：本故障未命中 <code>memory_corruption_second_scene.md</code>（fault_addr 0x00007f3e06607000 不以 0x006b/0x6b6b 开头；调用栈不含 edata_heap_remove / emap_update_edata_state；PixelConvert 日志表明是声明尺寸与源容量不匹配的直接越界读，非堆元数据损坏场景），使用模板 A。</p></blockquote>
+<div class="table-wrap"><table><thead><tr><th>层级</th><th>根因</th><th>匹配依据</th></tr></thead><tbody><tr><td>一级根因</td><td>CPP_CRASH</td><td>Reason: Signal:SIGSEGV(SEGV_MAPERR)@0x00007f3e06607000</td></tr><tr><td>二级根因</td><td>SIGSEGV (1.1.1.11.0)</td><td>signo=SIGSEGV，无效内存引用</td></tr><tr><td>三级根因</td><td>SEGV_MAPERR (1.1.1.11.1)</td><td>code=SEGV_MAPERR，访问未映射地址</td></tr></tbody></table></div>
+<h2 id="s-5">证据链</h2>
+<p><strong>1. 信号与子码语义分析</strong></p>
+<ul><li>原始日志：</li></ul>
+<p><code>Reason:Signal:SIGSEGV(SEGV_MAPERR)@0x00007f3e06607000</code> <code>Fault thread info: Tid:4004, Name:OS_FFRT_2_1</code></p>
+<ul><li>解读：</li></ul>
+<p>SEGV_MAPERR 表示访问了未映射地址。故障地址 0x00007f3e06607000 既非接近 0 的空指针形态，也非含可打印字符的覆盖形态，而是紧贴源读取指针 rsi（0x00007f3e06605000）+ 0x2000 的映射边界——典型的顺序读取越过连续缓冲区末界的形态。</p>
+<p><strong>2. 寄存器与故障地址分析</strong></p>
+<ul><li>原始日志：</li></ul>
+<p><code>rsi:00007f3e06605000 rdi:00007f3e050ed000</code> <code>r8:0000000000001400 r12:0000000000005000 r15:0000000000005000</code></p>
+<ul><li>解读：</li><li><strong>x0/this 指针</strong>：非成员函数崩溃场景，不适用。</li><li><strong>fault_addr 与相邻寄存器高位对比</strong>：fault_addr = rsi + 0x2000，与源指针 rsi 高位相同、仅低位越过映射末界，说明是源缓冲区顺序读取越界，不是对象成员被破坏。</li><li><strong>尺寸证据交叉验证</strong>：r8 = 0x1400 = 5120（声明宽度像素数）；r12 = r15 = 0x5000 = 20480 = 5120 × 4（RGBA_8888 单行字节数）；线程栈 x11 区打包值 <code>000002d000001400</code> 含 0x2d0 = 720（声明高度）。三者共同还原本次像素转换声明的源尺寸为 5120×720 RGBA_8888。</li><li><strong>字符串解码</strong>：各寄存器值未检出可打印 ASCII/UTF-16 覆盖特征。</li><li><strong>填充模式识别</strong>：未检出 0xaaaaaaaa / 0x6b6b / 0xdddddddd 等释放或未初始化填充，无内存破坏佐证。</li><li><strong>综合判断</strong>：寄存器证据、调用栈语义与 HiLog 尺寸日志（见第 5 项）交叉验证同一结论，可信度 HIGH。</li></ul>
+<p><strong>3. 调用栈关键帧</strong></p>
+<ul><li>原始日志：</li></ul>
+<pre><code>  #00 pc 00000000004db9d0 /system/lib64/libskia_canvaskit.z.so(sse2::RGBA_to_rgbA(unsigned int*, unsigned int const*, int)+16)
+  #01 pc 0000000000409f0c /system/lib64/libskia_canvaskit.z.so(SkConvertPixels(...)+956)
+  #02 pc 00000000003d6456 /system/lib64/libskia_canvaskit.z.so(SkBitmap::writePixels(...)+374)
+  #03 pc 0000000000003330 /system/lib64/platformsdk/libpixelconvertadapter.z.so(OHOS::Media::PixelConvertAdapter::WritePixelsConvert(...)+768)
+  #04 pc 000000000010b97a /system/lib64/platformsdk/libimage_native.z.so(OHOS::Media::PixelConvert::PixelsConvert(...)+3914)
+  #05 pc 00000000000f1ed4 /system/lib64/platformsdk/libimage_native.z.so(OHOS::Media::PixelMap::Create(...)+1172)
+  #06 pc 00000000000f18fd /system/lib64/platformsdk/libimage_native.z.so(OHOS::Media::PixelMap::Create(...)+157)
+  #07 pc 000000000000da1e3 /system/lib64/platformsdk/libimage_napi.z.so
+  #08 pc 0000000000090fb3 /system/lib64/platformsdk/libace_napi.z.so(NativeAsyncWork::AsyncWorkCallback(uv_work_s*)+451)</code></pre>
+<ul><li>解读：</li><li><strong>崩溃帧</strong>：#00 <code>sse2::RGBA_to_rgbA</code>（系统库：源 RGBA 像素逐块读取并转预乘 alpha）</li><li><strong>首个非运行时调用方</strong>：<code>PixelConvertAdapter::WritePixelsConvert</code>（系统图像转换适配层）</li><li><strong>首个应用侧帧</strong>：无（全栈为系统模块；ArkTS 侧入口为 <code>image.createPixelMap</code>，经 N-API 异步任务进入，无应用 .so 帧）</li><li><strong>调用链语义</strong>：ArkTS 调用 <code>image.createPixelMap(buffer, options)</code> → image_napi 在 FFRT 工作线程执行 <code>PixelMap::Create</code> → <code>PixelConvert::PixelsConvert</code> 按 options 声明的尺寸/格式把源 buffer 转换写入新建 PixelMap → SkConvertPixels/RGBA_to_rgbA 按声明尺寸读取源数据越过映射边界崩溃。系统栈由应用传入的尺寸入参触发，符合&quot;系统栈也可能由错误入参触发&quot;的模式。</li></ul>
+<p><strong>4. 源码行号与 BuildID（如符号可用）</strong></p>
+<ul><li>源码行号：无需 Native 符号反解即已闭合——全栈为系统库帧，无可反解的应用 .so 帧；根因调用点位于 ArkTS 源码 <code>entry/src/main/ets/vision/ChopCameraController.ets:236-243</code>（<code>processFrame()</code> 中 <code>image.createPixelMap</code> 入参构造）。</li><li>关键帧 BuildID（供后续系统侧核查）：</li><li>libskia_canvaskit.z.so: 9deb3dec11a258de3662fd8b75255894</li><li>libimage_native.z.so: 293b122192f43607111b4bf65cd5f394</li><li>libimage_napi.z.so: e1c3fbe3e27ff8dd84605d66636057de</li></ul>
+<p><strong>5. Memory Near / Maps 辅助证据（如有）</strong></p>
+<ul><li>目标写入缓冲区 rdi（0x00007f3e050ed000）归属 <code>[anon:/dev/ashmem/Create PixelMap]</code>（创建中的 PixelMap 数据区），符合&quot;转换写入新建 PixelMap&quot;的语义。</li><li>HiLog 决定性证据（崩溃前 4ms）：</li></ul>
+<p><code>11-16 16:40:48.530 E C02b61/PixelConvert: srcLength = 3686400, size:(5120, 720)</code> 源缓冲区实际 3,686,400 字节（= 1280×720×4，RGBA 帧真实容量），而声明创建尺寸为 (5120, 720)——按 RGBA_8888 需读取 5120×720×4 = 14,745,600 字节，为实际容量的 4 倍，必然越界读取。</p>
+<ul><li>触发时序还原：</li><li>16:40:47.885 相机打开成功；16:40:47.907 AI 预览档选定 1280×720、format=3（<code>CAMERA_FORMAT_RGBA_8888</code>）</li><li>16:40:47.949 <code>SkeletonDetector.create()</code> 开始；16:40:47.969 失败（code 1011000002，模拟器 CoreVision 服务异常），<code>start()</code> catch 后仅调用 <code>fail()</code>，未回滚已 <code>session.start()</code> 的相机会话</li><li>相机帧持续到达 → <code>imageArrival</code> 回调进入 <code>processFrame()</code> → <code>getComponent()</code> 取得 rowStride=5120（1280×4 字节）的组件</li><li>16:40:48.530 PixelConvert 记录不匹配尺寸；16:40:48.534 SIGSEGV，进程终止（用户感知&quot;闪退&quot;）</li></ul>
+<h2 id="s-6">根本原因</h2>
+<ul><li><strong>直接原因</strong>：<code>ChopCameraController.ets</code> 的 <code>processFrame()</code> 把 <code>component.rowStride</code>（字节单位；RGBA_8888 帧为 1280×4 = 5120 字节）当作 <code>size.width</code>（像素单位）传入 <code>image.createPixelMap(component.byteBuffer, options)</code>，声明源尺寸 5120×720 超出源缓冲区实际容量（1280×720×4 字节），系统 image 库在 <code>SkConvertPixels</code>/<code>sse2::RGBA_to_rgbA</code> 中按声明尺寸顺序读取源数据，越过映射末界触发 SIGSEGV(SEGV_MAPERR)。</li><li><strong>深层原因</strong>：(1) 行跨距（rowStride，字节）与图像宽度（width，像素）单位混淆，且与 <code>this.frameW</code>（像素）直接比较后整体替换宽度；(2) <code>start()</code> 失败路径不回滚——<code>SkeletonDetector.create()</code> 失败后 catch 仅调用 <code>fail()</code>，未释放已启动的相机会话与 ImageReceiver，半初始化状态继续消费相机帧；<code>started</code> 标志不重置导致用户无法通过重新进入恢复。</li><li><strong>触发路径</strong>：点击「🎥 开摄像头，挥手切菜」→ <code>ChopCameraController.start()</code> 建立双路预览（RGBA 1280×720 AI 流 → ImageReceiver）→ <code>SkeletonDetector.create()</code> 失败但会话未回滚 → 首帧到达触发 <code>imageArrival</code> → <code>processFrame()</code> 以 rowStride=5120 构造 <code>createPixelMap(buffer, {width:5120, height:720})</code> → PixelConvert 按声明尺寸读源越界 → SIGSEGV → 进程终止（闪退）。</li></ul>
+<h2 id="s-7">根因模块</h2>
+<ul><li><strong>责任领域</strong>：应用</li><li><strong>责任模块</strong>：<code>entry/src/main/ets/vision/ChopCameraController.ets</code> ! <code>processFrame()</code>（<code>image.createPixelMap</code> 入参构造，236-243 行）</li><li><strong>定界依据</strong>：</li></ul>
+<ol><li>基于故障根本原因定界：PixelConvert 日志直接给出 <code>srcLength = 3686400, size:(5120, 720)</code>，声明尺寸来自应用 ArkTS 入参（源码 236-237 行 rowStride 字节误作像素宽度），属应用侧入参契约违约，非系统库内部缺陷。</li><li>so 路径归属：崩溃帧/首个非运行时调用方均为 /system 系统库，但系统栈由应用错误入参触发，按调用契约定界到应用侧。</li><li>死锁场景补充：非死锁。</li></ol>
+<h2 id="s-8">修复建议（源码可达时需给出源码级修复建议）</h2>
+<ol><li><strong>修改 1（核心）</strong> — <code>entry/src/main/ets/vision/ChopCameraController.ets:235-237</code>（rowStride 由&quot;字节&quot;换算为&quot;像素&quot;后再作为宽度传入，并对源缓冲区容量做防御校验，杜绝越界读触发 SIGSEGV）</li></ol>
+<pre><code><span class="diff-del">-      const stride: number = component.rowStride</span>
+<span class="diff-del">-      const strideDifferent: boolean = stride !== this.frameW</span>
+<span class="diff-del">-      const createWidth: number = strideDifferent ? stride : this.frameW</span>
+<span class="diff-ins">+      // rowStride 为字节单位，需按源格式每像素字节数换算成像素宽度</span>
+<span class="diff-ins">+      const bytesPerPixel: number = this.srcFormat === image.PixelMapFormat.RGBA_8888 ? 4 : 1</span>
+<span class="diff-ins">+      const stride: number = component.rowStride</span>
+<span class="diff-ins">+      const strideDifferent: boolean =</span>
+<span class="diff-ins">+        stride &gt; this.frameW * bytesPerPixel &amp;&amp; stride % bytesPerPixel === 0</span>
+<span class="diff-ins">+      const createWidth: number = strideDifferent ? stride / bytesPerPixel : this.frameW</span>
+<span class="diff-ins">+      // 源缓冲区容量防御校验：低于声明尺寸所需字节数时丢弃该帧，避免系统库越界读</span>
+<span class="diff-ins">+      const srcBytesPerPix: number = this.srcFormat === image.PixelMapFormat.RGBA_8888 ? 4 : 1.5</span>
+<span class="diff-ins">+      const requiredBytes: number = createWidth * this.frameH * srcBytesPerPix</span>
+<span class="diff-ins">+      if (component.byteBuffer.byteLength &lt; requiredBytes) {</span>
+<span class="diff-ins">+        await img.release()</span>
+<span class="diff-ins">+        this.detecting = false</span>
+<span class="diff-ins">+        return</span>
+<span class="diff-ins">+      }</span></code></pre>
+<ol><li><strong>修改 2</strong> — <code>entry/src/main/ets/vision/ChopCameraController.ets:101-106</code>（<code>start()</code> 失败路径回滚已启动的相机会话/接收器并重置 <code>started</code>，消除&quot;detector 失败后半初始化状态继续消费相机帧&quot;的崩溃触发面）</li></ol>
+<pre><code><span class="diff-txt">     } catch (err) {</span>
+<span class="diff-txt">       const error = err as BusinessError</span>
+<span class="diff-txt">       hilog.error(DOMAIN, TAG, &#x27;start failed, code %{public}d, msg %{public}s&#x27;,</span>
+<span class="diff-txt">         error.code, error.message)</span>
+<span class="diff-ins">+      // 失败路径回滚：释放已启动的会话与接收器，避免半初始化状态继续消费相机帧</span>
+<span class="diff-ins">+      await this.stop()</span>
+<span class="diff-ins">+      this.started = false</span>
+<span class="diff-txt">       this.fail(&#x27;摄像头启动失败，请稍后重试&#x27;)</span>
+<span class="diff-txt">     }</span></code></pre>
+<ol><li><strong>修改 3</strong> — <code>entry/src/main/ets/vision/ChopCameraController.ets:165</code>（<code>stop()</code> 末尾复位 <code>releasing</code>，配合修改 2 保证回滚后可重新启动）</li></ol>
+<pre><code><span class="diff-txt">     this.camManager = null</span>
+<span class="diff-ins">+    this.releasing = false</span>
+<span class="diff-txt">   }</span></code></pre>
+<ol><li>说明：模拟器上 <code>SkeletonDetection</code> 服务不可用（1011000002 The service is abnormal）只是本次故障的触发背景，不是崩溃根因；修改 1 落地后即使 detector 创建失败，<code>processFrame</code> 也不会再越界。手势识别功能需在支持 CoreVision Kit 的真机上验证可用性。</li></ol>
+<ol><li>回归建议：修复后复测「开摄像头，挥手切菜」入口——模拟器（RGBA 1280×720 档）与真机（NV21 档）各验证一轮，重点确认：首帧处理不再崩溃；<code>rowStride</code> 存在对齐 padding 的设备上裁剪（<code>applyCropSync</code>）结果正确；detector 失败时界面正常回退且可再次进入重新启动。</li></ol>
+<h2 id="s-9">是否需要进一步分析</h2>
+<ul><li>☐ 反汇编分析（pc 附近指令）</li><li>☐ HWASan / ASan 地址越界检测</li><li>☐ 符号文件 BuildID 核对</li><li>☐ Core Dump / Tombstone 深度解析</li><li>☐ 多次复现对比以排除随机性</li></ul>
+<div class="footer">本报告由 DevEco Code DFX 故障分析生成 · 代码块含语法高亮，修复建议含源码差异对比</div>
+</div>
+<nav class="toc" id="dfx-toc"><div class="toc-title">目录</div>
+<a href="#s-1" class="toc-1">CppCrash 问题综合分析报告</a>
+<a href="#s-2" class="toc-2">故障基本信息</a>
+<a href="#s-3" class="toc-2">根因分析</a>
+<a href="#s-4" class="toc-2">三级根因定位（依据 CPP_CRASH 故障模式库）</a>
+<a href="#s-5" class="toc-2">证据链</a>
+<a href="#s-6" class="toc-2">根本原因</a>
+<a href="#s-7" class="toc-2">根因模块</a>
+<a href="#s-8" class="toc-2">修复建议（源码可达时需给出源码级修复建议）</a>
+<a href="#s-9" class="toc-2">是否需要进一步分析</a></nav>
+</div>
+<script>
+(function () {
+  var nav = document.getElementById("dfx-toc");
+  var links = nav ? Array.prototype.slice.call(nav.querySelectorAll("a[href^='#']")) : [];
+  if (!links.length) return;
+  var targets = [];
+  links.forEach(function (a) {
+    var el = document.getElementById(a.getAttribute("href").slice(1));
+    if (el) targets.push(el);
+  });
+  function update() {
+    var pos = window.scrollY + 96;
+    var idx = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].offsetTop <= pos) idx = i;
+    }
+    links.forEach(function (a, i) { a.classList.toggle("active", i === idx); });
+  }
+  window.addEventListener("scroll", update, { passive: true });
+  update();
+})();
+</script>
+</body>
+</html>
