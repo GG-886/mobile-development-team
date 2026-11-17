@@ -1,6 +1,7 @@
 import { VegType, getVegInfo, RecipeInfo, PROCESSED_CAPACITY, FAST_KNIFE_PRICE } from '../game/GameModel'
 import { CustomerOrder, getRecipeById, canCoverRecipe, missingIngredientLabel } from '../game/OrderModel'
 import { ScreenUtil } from '../common/ScreenUtil'
+import { LengthMetrics } from '@kit.ArkUI'
 
 // 顾客订单卡：顾客头像 + 气泡订单 + 耐心条 + 缺料提示 + 交付按钮
 @Component
@@ -430,9 +431,11 @@ export struct KitchenScene {
             .fontSize(ScreenUtil.f(13))
             .fontColor('#FFFFFF')
             .fontWeight(FontWeight.Medium)
+            .maxLines(1)
         }
         .backgroundColor('#7E57C2')
         .borderRadius(ScreenUtil.w(22))
+        .constraintSize({ maxWidth: '94%' })
         .padding({
           left: ScreenUtil.w(18),
           right: ScreenUtil.w(18),
@@ -450,9 +453,11 @@ export struct KitchenScene {
             .fontSize(ScreenUtil.f(12))
             .fontColor('#FFFFFF')
             .fontWeight(FontWeight.Medium)
+            .maxLines(1)
         }
         .backgroundColor('#F57C00')
         .borderRadius(ScreenUtil.w(22))
+        .constraintSize({ maxWidth: '94%' })
         .padding({
           left: ScreenUtil.w(16),
           right: ScreenUtil.w(16),
@@ -464,15 +469,26 @@ export struct KitchenScene {
         })
       }
 
-      Row({ space: ScreenUtil.w(8) }) {
+      // 底部操作按钮：Flex 换行布局，窄屏自动折成两行，宽屏单行铺满
+      Flex({
+        wrap: FlexWrap.Wrap,
+        justifyContent: FlexAlign.Center,
+        alignContent: FlexAlign.Center,
+        space: {
+          main: LengthMetrics.vp(ScreenUtil.w(8)),
+          cross: LengthMetrics.vp(ScreenUtil.w(8))
+        }
+      }) {
         Button() {
           Text(this.knifeLabel())
             .fontSize(ScreenUtil.f(13))
             .fontColor('#FFFFFF')
             .fontWeight(FontWeight.Medium)
+            .maxLines(1)
         }
         .backgroundColor(this.knifeBtnColor())
         .borderRadius(ScreenUtil.w(22))
+        .flexGrow(1)
         .padding({
           left: ScreenUtil.w(13),
           right: ScreenUtil.w(13),
@@ -488,9 +504,11 @@ export struct KitchenScene {
             .fontSize(ScreenUtil.f(13))
             .fontColor('#FFFFFF')
             .fontWeight(FontWeight.Medium)
+            .maxLines(1)
         }
         .backgroundColor('#8D6E63')
         .borderRadius(ScreenUtil.w(22))
+        .flexGrow(1)
         .padding({
           left: ScreenUtil.w(13),
           right: ScreenUtil.w(13),
@@ -506,9 +524,11 @@ export struct KitchenScene {
             .fontSize(ScreenUtil.f(13))
             .fontColor('#FFFFFF')
             .fontWeight(FontWeight.Medium)
+            .maxLines(1)
         }
         .backgroundColor('#66BB6A')
         .borderRadius(ScreenUtil.w(22))
+        .flexGrow(1)
         .padding({
           left: ScreenUtil.w(13),
           right: ScreenUtil.w(13),
@@ -524,9 +544,11 @@ export struct KitchenScene {
             .fontSize(ScreenUtil.f(13))
             .fontColor('#FFFFFF')
             .fontWeight(FontWeight.Medium)
+            .maxLines(1)
         }
         .backgroundColor('#6D4C41')
         .borderRadius(ScreenUtil.w(22))
+        .flexGrow(1)
         .padding({
           left: ScreenUtil.w(13),
           right: ScreenUtil.w(13),
@@ -537,6 +559,7 @@ export struct KitchenScene {
           this.onBackGarden()
         })
       }
+      .width('100%')
       .margin({ bottom: ScreenUtil.w(8) })
     }
     .width('100%')
