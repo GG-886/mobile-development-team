@@ -1,7 +1,6 @@
 import { VegType, getVegInfo, RecipeInfo, PROCESSED_CAPACITY, FAST_KNIFE_PRICE } from '../game/GameModel'
 import { CustomerOrder, getRecipeById, canCoverRecipe, missingIngredientLabel } from '../game/OrderModel'
 import { ScreenUtil } from '../common/ScreenUtil'
-import { LengthMetrics } from '@kit.ArkUI'
 
 // 顾客订单卡：顾客头像 + 气泡订单 + 耐心条 + 缺料提示 + 交付按钮
 @Component
@@ -354,6 +353,8 @@ export struct KitchenScene {
   }
 
   build() {
+    // 外层 Scroll：小屏内容过高时可滚动到底部按钮，不会把按钮挤出屏幕
+    Scroll() {
     Column({ space: ScreenUtil.w(10) }) {
       Text(this.statusHint())
         .fontSize(ScreenUtil.f(12))
@@ -469,16 +470,8 @@ export struct KitchenScene {
         })
       }
 
-      // 底部操作按钮：Flex 换行布局，窄屏自动折成两行，宽屏单行铺满
-      Flex({
-        wrap: FlexWrap.Wrap,
-        justifyContent: FlexAlign.Center,
-        alignContent: FlexAlign.Center,
-        space: {
-          main: LengthMetrics.vp(ScreenUtil.w(8)),
-          cross: LengthMetrics.vp(ScreenUtil.w(8))
-        }
-      }) {
+      // 底部操作按钮：2×2 网格均分宽度，任何屏宽都不会横向溢出
+      Row({ space: ScreenUtil.w(8) }) {
         Button() {
           Text(this.knifeLabel())
             .fontSize(ScreenUtil.f(13))
@@ -488,10 +481,10 @@ export struct KitchenScene {
         }
         .backgroundColor(this.knifeBtnColor())
         .borderRadius(ScreenUtil.w(22))
-        .flexGrow(1)
+        .layoutWeight(1)
         .padding({
-          left: ScreenUtil.w(13),
-          right: ScreenUtil.w(13),
+          left: ScreenUtil.w(10),
+          right: ScreenUtil.w(10),
           top: ScreenUtil.w(9),
           bottom: ScreenUtil.w(9)
         })
@@ -508,17 +501,20 @@ export struct KitchenScene {
         }
         .backgroundColor('#8D6E63')
         .borderRadius(ScreenUtil.w(22))
-        .flexGrow(1)
+        .layoutWeight(1)
         .padding({
-          left: ScreenUtil.w(13),
-          right: ScreenUtil.w(13),
+          left: ScreenUtil.w(10),
+          right: ScreenUtil.w(10),
           top: ScreenUtil.w(9),
           bottom: ScreenUtil.w(9)
         })
         .onClick(() => {
           this.onOpenBackpack()
         })
+      }
+      .width('100%')
 
+      Row({ space: ScreenUtil.w(8) }) {
         Button() {
           Text('📖 菜谱板')
             .fontSize(ScreenUtil.f(13))
@@ -528,10 +524,10 @@ export struct KitchenScene {
         }
         .backgroundColor('#66BB6A')
         .borderRadius(ScreenUtil.w(22))
-        .flexGrow(1)
+        .layoutWeight(1)
         .padding({
-          left: ScreenUtil.w(13),
-          right: ScreenUtil.w(13),
+          left: ScreenUtil.w(10),
+          right: ScreenUtil.w(10),
           top: ScreenUtil.w(9),
           bottom: ScreenUtil.w(9)
         })
@@ -548,10 +544,10 @@ export struct KitchenScene {
         }
         .backgroundColor('#6D4C41')
         .borderRadius(ScreenUtil.w(22))
-        .flexGrow(1)
+        .layoutWeight(1)
         .padding({
-          left: ScreenUtil.w(13),
-          right: ScreenUtil.w(13),
+          left: ScreenUtil.w(10),
+          right: ScreenUtil.w(10),
           top: ScreenUtil.w(9),
           bottom: ScreenUtil.w(9)
         })
@@ -563,7 +559,11 @@ export struct KitchenScene {
       .margin({ bottom: ScreenUtil.w(8) })
     }
     .width('100%')
-    .height('100%')
+    .constraintSize({ minHeight: '100%' })
     .justifyContent(FlexAlign.Center)
+    }
+    .width('100%')
+    .height('100%')
+    .scrollBar(BarState.Off)
   }
 }
